@@ -1,0 +1,79 @@
+---
+title: 'HW #6'
+author: "Jordan Hoehne"
+date: "11/13/2017"
+output: word_document
+---
+
+```{r}
+library(moments)
+set.seed(123456)
+x<-rchisq(100,5)
+```
+
+```{r}
+N<-length(x)
+Summation<-sum(x)
+mu<-Summation/N
+list(mu)
+```
+
+1. What is the mean? 5.153984
+2. What is the variance? 9.090508
+3. What is the skewness? From this number, is the mean greater or smaller
+than the median? Why? Skewness is 0.7777164 & median is 4.531642
+4. What is the kurtosis? Is it a fat- or thin-tail distribution? Kurtosis is 3.142032, if kurtosis is greater than 3, the distribution is assumed to have a fat tail. 
+
+Variance 
+```{r}
+Variance<-sd(x)^2
+list(Variance)
+```
+
+Skewness 
+```{r}
+skewness(x)
+```
+
+Median
+```{r}
+median(x)
+```
+Kurtosis
+```{r}
+kurtosis(x)
+```
+
+2a. Generate the 6th moment vars 
+```{r}
+six.moment.var<-(x^6)-(mu^6)
+list(six.moment.var)
+```
+2b. Mean of the new variable six.moment.var 
+```{r}
+numerator<-sum(six.moment.var)/length(six.moment.var)
+list(numerator)
+```
+
+
+```{r}
+variance<-(sd(x)^2)/length(x)
+list(variance)
+
+sd<-sqrt(variance)
+list(sd)
+```
+
+```{r}
+denominator<-sd^6
+list(denominator)
+```
+
+```{r}
+#sss = sixth sense statistic
+sss<-numerator/denominator
+list(sss)
+```
+
+
+
