@@ -1,72 +1,75 @@
----
-title: 'Homework #5'
-author: "Jordan Hoehne"
-date: "10/27/2017"
-output:
-  word_document: default
-  pdf_document: default
----
-##Question 1
+#Question 1 Probability of failure for A & B 
 
 FA <- Failure due to condition A 
 FB <- Failure due to condition B 
 FAB <- Falure due to conditions A & B 
 
-```{r}
+#Probabilities for each failure condition
 FA <- 0.02
 FB <- 0.03
 FAB <- 0.01
 
+#Success defined as 1.00
 PSuccess <- 1
 
 #Queston 1.1 Probability of Failure = (FA + FB - FAB), we subtract FAB as we do not double count these values in our equation
+
 PFailure <- (FA+FB-FAB)
-#Question 1.2 
+
+#Question 1.2
+
 PSF <- PSuccess - PFailure 
+
 #Numeric value for our equation above 
 list(PSF)
-```
-A randomly chosen chip has a 0.04 percent chance of failing. The alternative is that a randomly chosen chip has a 96% chance of not failing. Knowing these statistics, the company can corretctly price its warranty package correctly. 
 
+#A randomly chosen chip has a 0.04 percent chance of failing. The alternative is that a 
+#randomly chosen chip has a 96% chance of not failing. Knowing these statistics, the company 
+#can corretctly price its warranty package correctly. 
 
-##Question 2.1
-To begin our analysis, we will pull up the data for the stock prices of Google through quantmod and referencing Yahoo.com's data. 
-```{r}
+#PRACTICE WORKING WITH STOCK MARKET DATA 
+
+#Question 2.1 To begin our analysis, we will pull up the data for the stock 
+#prices of Google through quantmod and referencing Yahoo.com's data. 
+
 library("quantmod")
 getSymbols('GOOG', src='yahoo')
 head(GOOG)
-```
 
-##Question 2.2
-Now, we will construct a new variable called daily returns, defined as difference in log. 
 
-Algebraically: return<-log(S[i]/S[i-1])
-```{r}
+##Question 2.2 Now, we will construct a new variable called daily returns, defined as difference in log. 
+
+#Algebraically: return<-log(S[i]/S[i-1])
+
 dailyreturns<-diff(GOOG$GOOG.Adjusted)/lag(GOOG$GOOG.Adjusted)
-```
 
-##Queston 2.3 
-Now to calculate the VaR (value at risk) for daily returns at 95 percent confidence level based on the distribution for the daily returns.
-```{r}
+
+#Queston 2.3 Now to calculate the VaR (value at risk) for daily returns at 
+#95 percent confidence level based on the distribution for the daily returns.
+
 #the distribution of daily returns 
 #ret is our variable we are examining
 #0.05 is our alpha level in relation to our confidence interval of 95% 
-#type = 1 refereces the inverse of empircal distribution function, y=0 if g=0, and 1 otherwise. Q[i](p) is a discontinuous function of p, with m=0 when i=1 and i=2, and m=-1/2 when i=3
-VaRdailyreturns.05<-quantile(dailyreturns, 0.05, type=1, na.rm=TRUE)
-```
+#type = 1 refereces the inverse of empircal distribution function, y=0 if g=0, and 1 otherwise. Q[i](p) 
+#is a discontinuous function of p, with m=0 when i=1 and i=2, and m=-1/2 when i=3
 
-##Question 2.4 
-VaR for $10,000 invested at a 95% confidence interval
-```{r}
+VaRdailyreturns.05<-quantile(dailyreturns, 0.05, type=1, na.rm=TRUE)
+
+#Question 2.4 VaR for $10,000 invested at a 95% confidence interval
+
 #VaR = Amount Invested * VaR for Daily Returns
+
 VaR.05 <- 10000*VaRdailyreturns.05
+
 #the below code gives us the amount that we could lose upon investing
+
 list((VaR.05))
+
 #the below code gives us the absolute value of the amount that we could lose upon investing
+
 list(abs(VaR.05))
 
-```
-Thus, there is a 5% chance that we will lose more than $259.6059 on our $10,000 investment in the next day. 
+#Thus, there is a 5% chance that we will lose more than $259.6059 on our $10,000 investment in the next day. 
 
 ##Question 2.5 
 ```{r}
